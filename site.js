@@ -1,4 +1,4 @@
-const demoData = {
+const initialDemoData = {
   updated: "2026-05-03 17:46:33",
   trustedBindings: [
     { ip: "192.168.1.254", mac: "50:95:51:93:A2:C8" },
@@ -62,6 +62,8 @@ OS details: Linux 5.X`
   ]
 };
 
+let demoData = structuredClone(initialDemoData);
+
 const state = {
   view: "overview",
   filter: "all"
@@ -85,6 +87,21 @@ function emptyRow(message, cols) {
 
 function wrapTable(headers, rows, scroll = false) {
   return `<div class="table-panel"><div class="table-wrap${scroll ? " scroll" : ""}"><table><thead><tr>${headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.length ? rows.join("") : emptyRow("No data available", headers.length)}</tbody></table></div></div>`;
+}
+
+function restoreDemoData() {
+  demoData = structuredClone(initialDemoData);
+}
+
+function clearDeviceData() {
+  demoData.devices = [];
+}
+
+function clearMonitoringData() {
+  clearDeviceData();
+  demoData.alerts = [];
+  demoData.events = [];
+  demoData.syslog = [];
 }
 
 function setView(view) {
@@ -123,7 +140,7 @@ function renderOverview() {
         <div class="section-subtitle">Live summary of trusted bindings, devices, alerts, and suspicious activity.</div>
       </div>
       <div class="section-tools">
-        <button id="resetOverviewBtn" class="btn btn-ghost">Reset</button>
+        <button id="clearOverviewBtn" class="btn btn-ghost">Clear</button>
       </div>
     </div>
 
@@ -169,13 +186,10 @@ function renderOverview() {
   `;
 
   setTimeout(() => {
-    const resetBtn = el("resetOverviewBtn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
-        demoData.devices = demoData.devicesBackup.map(d => ({ ...d, name: "" }));
-        demoData.alerts = [];
-        demoData.events = [];
-        demoData.syslog = [];
+    const clearBtn = el("clearOverviewBtn");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        clearMonitoringData();
         renderAll();
       });
     }
@@ -212,7 +226,7 @@ function renderDevices() {
       </div>
       <div class="section-tools">
         <button id="scanNowBtn" class="btn btn-ghost">Scan Now</button>
-        <button id="resetDevicesBtn" class="btn btn-ghost">Reset</button>
+        <button id="clearDevicesBtn" class="btn btn-ghost">Clear</button>
       </div>
     </div>
 
@@ -248,11 +262,12 @@ function renderDevices() {
       button.addEventListener("click", () => setFilter(button.dataset.filter));
     });
 
-    const resetBtn = el("resetDevicesBtn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
-        demoData.devices = demoData.devicesBackup.map(d => ({ ...d, name: "" }));
+    const clearBtn = el("clearDevicesBtn");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        clearDeviceData();
         renderDevices();
+        renderOverview();
       });
     }
 
@@ -273,7 +288,7 @@ function renderAlerts() {
         <div class="section-subtitle">Recent new-device alerts and network notices.</div>
       </div>
       <div class="section-tools">
-        <button id="resetAlertsBtn" class="btn btn-ghost">Reset</button>
+        <button id="clearAlertsBtn" class="btn btn-ghost">Clear</button>
       </div>
     </div>
     ${wrapTable(
@@ -284,11 +299,12 @@ function renderAlerts() {
   `;
 
   setTimeout(() => {
-    const resetBtn = el("resetAlertsBtn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
+    const clearBtn = el("clearAlertsBtn");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
         demoData.alerts = [];
         renderAlerts();
+        renderOverview();
       });
     }
   }, 0);
@@ -302,7 +318,7 @@ function renderEvents() {
         <div class="section-subtitle">Sample suspicious and DAI-related event data.</div>
       </div>
       <div class="section-tools">
-        <button id="resetEventsBtn" class="btn btn-ghost">Reset</button>
+        <button id="clearEventsBtn" class="btn btn-ghost">Clear</button>
       </div>
     </div>
     ${wrapTable(
@@ -313,11 +329,12 @@ function renderEvents() {
   `;
 
   setTimeout(() => {
-    const resetBtn = el("resetEventsBtn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
+    const clearBtn = el("clearEventsBtn");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
         demoData.events = [];
         renderEvents();
+        renderOverview();
       });
     }
   }, 0);
@@ -331,7 +348,7 @@ function renderSyslog() {
         <div class="section-subtitle">Example switch syslog entries captured by Net-PY.</div>
       </div>
       <div class="section-tools">
-        <button id="resetSyslogBtn" class="btn btn-ghost">Reset</button>
+        <button id="clearSyslogBtn" class="btn btn-ghost">Clear</button>
       </div>
     </div>
     ${wrapTable(
@@ -342,11 +359,12 @@ function renderSyslog() {
   `;
 
   setTimeout(() => {
-    const resetBtn = el("resetSyslogBtn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
+    const clearBtn = el("clearSyslogBtn");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
         demoData.syslog = [];
         renderSyslog();
+        renderOverview();
       });
     }
   }, 0);
@@ -375,7 +393,7 @@ function renderScan() {
         <input id="scanInput" class="search-input" type="text" value="192.168.1.0/24" readonly>
         <button id="runScanBtn" class="btn btn-accent">Run Network Scan</button>
         <button id="clearScanBtn" class="btn btn-ghost">Clear Results</button>
-        <button id="resetDataBtn" class="btn btn-ghost">Reset All Data</button>
+        <button id="repopulateDataBtn" class="btn btn-ghost">Repopulate Data</button>
       </div>
 
       <div id="scanResults" class="scan-results">
@@ -400,6 +418,7 @@ function renderScan() {
     const runBtn = el("runScanBtn");
     if (runBtn) {
       runBtn.addEventListener("click", () => {
+        restoreDemoData();
         const scanResultsDiv = el("scanResults");
         const newScan = {
           label: "Network Scan",
@@ -419,7 +438,7 @@ OS details: Linux 5.X
 Scan completed at ${new Date().toLocaleTimeString()}`
         };
 
-        scanResultsDiv.innerHTML += `
+        scanResultsDiv.innerHTML = `
           <div class="scan-result">
             <div class="scan-head">
               <div class="scan-meta">
@@ -434,6 +453,8 @@ Scan completed at ${new Date().toLocaleTimeString()}`
             </div>
           </div>
         `;
+        renderAll();
+        setView("scan");
       });
     }
 
@@ -444,15 +465,13 @@ Scan completed at ${new Date().toLocaleTimeString()}`
       });
     }
 
-    const resetBtn = el("resetDataBtn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
-        demoData.devices = demoData.devicesBackup.map(d => ({ ...d, name: "" }));
-        demoData.syslog = [];
-        demoData.alerts = [];
-        demoData.events = [];
+    const repopulateBtn = el("repopulateDataBtn");
+    if (repopulateBtn) {
+      repopulateBtn.addEventListener("click", () => {
+        restoreDemoData();
         el("scanResults").innerHTML = "";
         renderAll();
+        setView("scan");
       });
     }
   }, 0);
