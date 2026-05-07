@@ -124,6 +124,27 @@ button,input,select{font:inherit;}
   color:var(--text);
   outline:none;
 }
+.table-input,.table-select,.setting-input{
+  width:100%;
+  min-height:38px;
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid var(--border-strong);
+  background:var(--panel-2);
+  color:var(--text);
+  outline:none;
+}
+.table-input:focus,.table-select:focus,.setting-input:focus{
+  border-color:#4f79a8;
+  box-shadow:0 0 0 3px rgba(59,130,246,0.12);
+}
+.mono-input{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+}
+.setting-control{
+  margin-top:12px;
+}
 .top-timestamp,.user-pill{
   color:var(--muted);
   font-family:'JetBrains Mono',monospace;

@@ -1,67 +1,148 @@
-const initialDemoData = {
-  updated: "2026-05-03 17:46:33",
-  trustedBindings: [
-    { ip: "192.168.1.254", mac: "50:95:51:93:A2:C8" },
+const eventSeedData = {
+  updated: "2026-03-18 11:27:38",
+  trusted_bindings: [
+    { ip: "192.168.1.254", mac: "50:95:51:93:A2:C0" },
     { ip: "192.168.1.119", mac: "A8:A1:59:60:49:23" }
   ],
   devices: [
-    { name: "Router", ip: "192.168.1.254", mac: "50:95:51:93:A2:C8", type: "Router", status: "trusted", firstSeen: "17:10:02", lastSeen: "17:46:31" },
-    { name: "Raspberry Pi", ip: "192.168.1.119", mac: "A8:A1:59:60:49:23", type: "Host", status: "trusted", firstSeen: "17:12:41", lastSeen: "17:46:33" },
-    { name: "", ip: "192.168.1.172", mac: "E8:68:E7:48:E9:74", type: "AP", status: "known", firstSeen: "17:18:07", lastSeen: "17:46:20" },
-    { name: "", ip: "192.168.1.217", mac: "78:83:9F:6A:40:49", type: "Laptop", status: "known", firstSeen: "17:20:13", lastSeen: "17:46:18" },
-    { name: "", ip: "192.168.1.58", mac: "4C:F3:E0:F1:98:64", type: "ESP32", status: "new", firstSeen: "17:34:48", lastSeen: "17:45:59" },
-    { name: "", ip: "192.168.1.42", mac: "84:C0:EF:1E:A8:4E", type: "IoT Device", status: "new", firstSeen: "17:31:02", lastSeen: "17:46:03" },
-    { name: "", ip: "192.168.1.37", mac: "CC:50:E3:E5:68:70", type: "ESP32", status: "alert", firstSeen: "17:37:19", lastSeen: "17:45:49" },
-    { name: "", ip: "192.168.1.31", mac: "4A:83:FE:36:46:1B", type: "Host", status: "known", firstSeen: "17:41:38", lastSeen: "17:42:29" }
-  ],
-  devicesBackup: [
-    { name: "Router", ip: "192.168.1.254", mac: "50:95:51:93:A2:C8", type: "Router", status: "trusted", firstSeen: "17:10:02", lastSeen: "17:46:31" },
-    { name: "Raspberry Pi", ip: "192.168.1.119", mac: "A8:A1:59:60:49:23", type: "Host", status: "trusted", firstSeen: "17:12:41", lastSeen: "17:46:33" },
-    { name: "", ip: "192.168.1.172", mac: "E8:68:E7:48:E9:74", type: "AP", status: "known", firstSeen: "17:18:07", lastSeen: "17:46:20" },
-    { name: "", ip: "192.168.1.217", mac: "78:83:9F:6A:40:49", type: "Laptop", status: "known", firstSeen: "17:20:13", lastSeen: "17:46:18" },
-    { name: "", ip: "192.168.1.58", mac: "4C:F3:E0:F1:98:64", type: "ESP32", status: "new", firstSeen: "17:34:48", lastSeen: "17:45:59" },
-    { name: "", ip: "192.168.1.42", mac: "84:C0:EF:1E:A8:4E", type: "IoT Device", status: "new", firstSeen: "17:31:02", lastSeen: "17:46:03" },
-    { name: "", ip: "192.168.1.37", mac: "CC:50:E3:E5:68:70", type: "ESP32", status: "alert", firstSeen: "17:37:19", lastSeen: "17:45:49" },
-    { name: "", ip: "192.168.1.31", mac: "4A:83:FE:36:46:1B", type: "Host", status: "known", firstSeen: "17:41:38", lastSeen: "17:42:29" }
+    { mac: "70:03:9F:4A:40:49", ip: "192.168.1.217", first_seen: "2026-03-18 11:19:57", last_seen: "2026-03-18 11:27:37" },
+    { mac: "E8:68:E7:48:E9:74", ip: "192.168.1.172", first_seen: "2026-03-18 11:19:58", last_seen: "2026-03-18 11:27:38" },
+    { mac: "E0:62:34:F9:CB:BD", ip: "192.168.1.192", first_seen: "2026-03-18 11:20:05", last_seen: "2026-03-18 11:27:36" },
+    { mac: "A8:A1:59:60:49:23", ip: "192.168.1.119", first_seen: "2026-03-18 11:20:11", last_seen: "2026-03-18 11:27:31" },
+    { mac: "D8:CB:8A:60:97:88", ip: "192.168.1.117", first_seen: "2026-03-18 11:20:11", last_seen: "2026-03-18 11:24:02" },
+    { mac: "50:95:51:93:A2:C0", ip: "192.168.1.254", first_seen: "2026-03-18 11:20:27", last_seen: "2026-03-18 11:27:31" },
+    { mac: "F4:8E:38:01:0C:87", ip: "192.168.1.118", first_seen: "2026-03-18 11:21:05", last_seen: "2026-03-18 11:21:05" },
+    { mac: "08:84:9D:F5:05:78", ip: "192.168.1.163", first_seen: "2026-03-18 11:24:22", last_seen: "2026-03-18 11:25:07" },
+    { mac: "08:B4:B1:FE:72:7A", ip: "192.168.1.100", first_seen: "2026-03-18 11:26:19", last_seen: "2026-03-18 11:26:24" }
   ],
   alerts: [
-    { time: "17:46:25", type: "new_device", ip: "192.168.1.192", mac: "E0:62:34:F9:C8:BD", message: "New device connected" },
-    { time: "17:46:26", type: "new_device", ip: "192.168.1.172", mac: "E8:68:E7:48:E9:74", message: "New device connected" },
-    { time: "17:46:30", type: "new_device", ip: "192.168.1.217", mac: "78:83:9F:6A:40:49", message: "New device connected" },
-    { time: "17:46:33", type: "new_device", ip: "192.168.1.119", mac: "A8:A1:59:60:49:23", message: "New device connected" }
+    { time: "11:19:57", type: "new_device", ip: "192.168.1.217", mac: "70:03:9F:4A:40:49", message: "New device connected" },
+    { time: "11:19:58", type: "new_device", ip: "192.168.1.172", mac: "E8:68:E7:48:E9:74", message: "New device connected" },
+    { time: "11:20:05", type: "new_device", ip: "192.168.1.192", mac: "E0:62:34:F9:CB:BD", message: "New device connected" },
+    { time: "11:20:11", type: "new_device", ip: "192.168.1.119", mac: "A8:A1:59:60:49:23", message: "New device connected" },
+    { time: "11:20:11", type: "new_device", ip: "192.168.1.117", mac: "D8:CB:8A:60:97:88", message: "New device connected" },
+    { time: "11:20:27", type: "new_device", ip: "192.168.1.254", mac: "50:95:51:93:A2:C0", message: "New device connected" },
+    { time: "11:21:05", type: "new_device", ip: "192.168.1.118", mac: "F4:8E:38:01:0C:87", message: "New device connected" },
+    { time: "11:24:22", type: "new_device", ip: "192.168.1.163", mac: "08:84:9D:F5:05:78", message: "New device connected" },
+    { time: "11:26:19", type: "new_device", ip: "192.168.1.100", mac: "08:B4:B1:FE:72:7A", message: "New device connected" }
   ],
   events: [
-    { time: "17:41:30", port: "LIVE", senderIp: "192.168.86.38", senderMac: "84:F3:EB:F1:98:E4", reason: "Subnet mismatch" },
-    { time: "17:41:30", port: "LIVE", senderIp: "192.168.86.42", senderMac: "84:C0:EF:1E:A8:4E", reason: "Subnet mismatch" },
-    { time: "17:41:33", port: "LIVE", senderIp: "192.168.86.37", senderMac: "CC:50:E3:E5:68:70", reason: "Subnet mismatch" },
-    { time: "17:41:35", port: "LIVE", senderIp: "192.168.86.41", senderMac: "84:F3:EB:F1:39:24", reason: "Subnet mismatch" }
-  ],
-  syslog: [
-    { time: "17:44:10", source: "sw-core", message: "%SW_DAI-4-DHCP_SNOOPING_DENY: 1 Invalid ARPs (Req) on Vlan 1, from 84:C0:EF:1E:A8:4E/192.168.1.42 to ff:ff:ff:ff:ff:ff/192.168.1.1" },
-    { time: "17:44:10", source: "sw-core", message: "Ethernet src 84:C0:EF:1E:A8:4E dst ff:ff:ff:ff:ff:ff" },
-    { time: "17:44:10", source: "sw-core", message: "ARP request from 192.168.1.42 for 192.168.1.1 vlan 1" },
-    { time: "17:45:03", source: "sw-edge", message: "%LINK-3-UPDOWN: Interface Gi0/1, changed state to up" }
-  ],
-  scanResults: [
-    {
-      label: "Network Scan",
-      status: "done",
-      started: "2026-05-03 17:46:00",
-      cmd: "nmap -O --osscan-limit -PR 192.168.1.0/24",
-      output:
-`Nmap scan report for 192.168.1.254
-Host is up (0.0010s latency).
-MAC Address: 50:95:51:93:A2:C8 (Router)
-Device type: broadband router
-
-Nmap scan report for 192.168.1.119
-Host is up (0.00080s latency).
-MAC Address: A8:A1:59:60:49:23 (Raspberry Pi)
-OS details: Linux 5.X`
-    }
+    { time: "11:21:06", port: "Gi1/0/5", senderIp: "192.168.1.254", senderMac: "D8:CB:8A:60:97:88", reason: "BLOCKED - IP spoof of trusted 192.168.1.254 (expected 50:95:51:93:A2:C0)" },
+    { time: "11:21:08", port: "Gi1/0/5", senderIp: "192.168.1.254", senderMac: "D8:CB:8A:60:97:88", reason: "BLOCKED - IP spoof of trusted 192.168.1.254 (expected 50:95:51:93:A2:C0)" },
+    { time: "11:21:10", port: "Gi1/0/5", senderIp: "192.168.1.254", senderMac: "D8:CB:8A:60:97:88", reason: "BLOCKED - IP spoof of trusted 192.168.1.254 (expected 50:95:51:93:A2:C0)" },
+    { time: "11:21:12", port: "Gi1/0/5", senderIp: "192.168.1.254", senderMac: "D8:CB:8A:60:97:88", reason: "BLOCKED - IP spoof of trusted 192.168.1.254 (expected 50:95:51:93:A2:C0)" },
+    { time: "11:21:14", port: "Gi1/0/5", senderIp: "192.168.1.254", senderMac: "D8:CB:8A:60:97:88", reason: "BLOCKED - IP spoof of trusted 192.168.1.254 (expected 50:95:51:93:A2:C0)" },
+    { time: "11:24:01", port: "Gi1/0/5", senderIp: "192.168.1.254", senderMac: "D8:CB:8A:60:97:88", reason: "BLOCKED - IP spoof of trusted 192.168.1.254 (expected 50:95:51:93:A2:C0)" }
   ]
 };
 
+const nicOptions = [
+  "Ethernet (192.168.1.119)",
+  "Network Bridge (192.168.86.20)",
+  "Wi-Fi (192.168.0.44)"
+];
+
+const deviceNames = [
+  "Router", "Raspberry Pi", "Media Server", "Security Camera", "Office Laptop",
+  "IoT Hub", "Smart TV", "Lab Sensor", "Printer", "Guest Phone"
+];
+
+const deviceTypes = [
+  "Router", "Host", "Laptop", "AP", "ESP32", "IoT Device", "Printer", "Server", "Phone"
+];
+
+const statusOptions = ["trusted", "known", "new", "alert"];
+
+function formatTimeStamp(date = new Date()) {
+  const pad = value => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+}
+
+function dateToShortTime(value) {
+  const pieces = String(value).split(" ");
+  return pieces[1] || pieces[0] || "";
+}
+
+function randomItem(items) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function shuffle(items) {
+  const copy = items.slice();
+  for (let index = copy.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+  }
+  return copy;
+}
+
+function buildScanOutput(devices) {
+  return devices.slice(0, 4).map(device => {
+    const friendlyName = device.name || device.type || "Unknown device";
+    return `Nmap scan report for ${device.ip}
+Host is up (0.00080s latency).
+MAC Address: ${device.mac} (${friendlyName})
+Device type: ${device.type || "host"}`;
+  }).join("\n\n");
+}
+
+function generateRandomizedDemoData() {
+  const selectedDevices = shuffle(eventSeedData.devices).slice(0, 8).map((device, index) => {
+    const trustedMacs = new Set(eventSeedData.trusted_bindings.map(binding => binding.mac));
+    const status = trustedMacs.has(device.mac)
+      ? "trusted"
+      : statusOptions[(index + Math.floor(Math.random() * statusOptions.length)) % statusOptions.length];
+
+    return {
+      id: `${device.ip}-${device.mac}`.replace(/[^a-zA-Z0-9]/g, ""),
+      name: Math.random() > 0.35 ? randomItem(deviceNames) : "",
+      ip: device.ip,
+      mac: device.mac,
+      type: randomItem(deviceTypes),
+      status,
+      firstSeen: dateToShortTime(device.first_seen),
+      lastSeen: dateToShortTime(device.last_seen)
+    };
+  });
+
+  const trustedBindings = eventSeedData.trusted_bindings.map(binding => ({ ...binding }));
+  const updated = formatTimeStamp();
+  const alerts = shuffle(eventSeedData.alerts).slice(0, 6).map(alert => ({ ...alert }));
+  const events = shuffle(eventSeedData.events).slice(0, 6).map(event => ({ ...event }));
+  const syslog = events.map((event, index) => ({
+    time: event.time,
+    source: index % 2 === 0 ? "sw-core" : "sw-edge",
+    message: `${event.port} ${event.reason}`
+  }));
+
+  const scanOutput = `${buildScanOutput(selectedDevices)}\n\nScan completed at ${new Date().toLocaleTimeString()}`;
+
+  return {
+    updated,
+    trustedBindings,
+    devices: selectedDevices,
+    alerts,
+    events,
+    syslog,
+    settings: {
+      activeInterface: randomItem(nicOptions),
+      autoRefresh: `${[5, 10, 15, 30][Math.floor(Math.random() * 4)]} second dashboard refresh`,
+      dashboardPort: String([3000, 4000, 5000, 8080][Math.floor(Math.random() * 4)]),
+      syslogPort: "514"
+    },
+    scanResults: [
+      {
+        label: "Network Scan",
+        status: "done",
+        started: updated,
+        cmd: "nmap -O --osscan-limit -PR 192.168.1.0/24",
+        output: scanOutput
+      }
+    ]
+  };
+}
+
+const initialDemoData = generateRandomizedDemoData();
 let demoData = structuredClone(initialDemoData);
 
 const state = {
@@ -89,12 +170,25 @@ function wrapTable(headers, rows, scroll = false) {
   return `<div class="table-panel"><div class="table-wrap${scroll ? " scroll" : ""}"><table><thead><tr>${headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.length ? rows.join("") : emptyRow("No data available", headers.length)}</tbody></table></div></div>`;
 }
 
+function settingsControl(label, control) {
+  return `<div class="setting-card"><div class="setting-label">${esc(label)}</div><div class="setting-control">${control}</div></div>`;
+}
+
 function restoreDemoData() {
-  demoData = structuredClone(initialDemoData);
+  demoData = generateRandomizedDemoData();
 }
 
 function clearDeviceData() {
-  demoData.devices = [];
+  demoData.devices = demoData.devices.map(device => ({
+    ...device,
+    name: "",
+    ip: "",
+    mac: "",
+    type: "",
+    status: "known",
+    firstSeen: "",
+    lastSeen: ""
+  }));
 }
 
 function clearMonitoringData() {
@@ -122,6 +216,28 @@ function setFilter(filter) {
   renderDevices();
 }
 
+function syncHeaderNic() {
+  const nicSelect = el("demoNic");
+  if (nicSelect) {
+    nicSelect.value = demoData.settings.activeInterface;
+  }
+}
+
+function updateDeviceField(index, field, value) {
+  if (!demoData.devices[index]) return;
+  demoData.devices[index][field] = value;
+  renderDevices();
+  renderOverview();
+}
+
+function updateSetting(field, value) {
+  demoData.settings[field] = value;
+  if (field === "activeInterface") {
+    syncHeaderNic();
+    renderSettings();
+  }
+}
+
 function renderOverview() {
   const overview = el("demo-overview");
   const latestAlerts = demoData.alerts.map(a => rowHtml([esc(a.time), esc(a.type), esc(a.ip), `<span class="wrap">${esc(a.message)}</span>`]));
@@ -146,7 +262,7 @@ function renderOverview() {
 
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-label">Trusted Bindings</div><div class="stat-value">${demoData.trustedBindings.length}</div></div>
-      <div class="stat-card"><div class="stat-label">Known Devices</div><div class="stat-value">${demoData.devices.length}</div></div>
+      <div class="stat-card"><div class="stat-label">Known Devices</div><div class="stat-value">${demoData.devices.filter(device => device.ip || device.mac || device.name || device.type).length}</div></div>
       <div class="stat-card"><div class="stat-label">Alerts</div><div class="stat-value">${demoData.alerts.length}</div></div>
       <div class="stat-card"><div class="stat-label">Events</div><div class="stat-value">${demoData.events.length}</div></div>
     </div>
@@ -158,7 +274,7 @@ function renderOverview() {
             <div class="panel-title">Trusted Bindings</div>
             <div class="panel-note">Updated: ${esc(demoData.updated)}</div>
           </div>
-          ${wrapTable(["IP", "MAC"], demoData.trustedBindings.map(b => rowHtml([esc(b.ip), esc(b.mac)])))}
+          ${wrapTable(["IP", "MAC"], demoData.trustedBindings.map(binding => rowHtml([esc(binding.ip), esc(binding.mac)])))}
         </div>
         <div class="panel">
           <div class="panel-head">
@@ -206,10 +322,10 @@ function renderDevices() {
   });
 
   const counts = {
-    trusted: demoData.devices.filter(d => d.status === "trusted").length,
-    known: demoData.devices.filter(d => d.status === "known").length,
-    new: demoData.devices.filter(d => d.status === "new").length,
-    alert: demoData.devices.filter(d => d.status === "alert").length
+    trusted: demoData.devices.filter(device => device.status === "trusted").length,
+    known: demoData.devices.filter(device => device.status === "known").length,
+    new: demoData.devices.filter(device => device.status === "new").length,
+    alert: demoData.devices.filter(device => device.status === "alert").length
   };
 
   section.innerHTML = `
@@ -243,15 +359,18 @@ function renderDevices() {
 
     ${wrapTable(
       ["Status", "Name", "IP", "MAC", "Type", "First Seen", "Last Seen"],
-      filtered.map(d => rowHtml([
-        `<span class="dot dot-${esc(d.status)}"></span><span class="status-${esc(d.status)}">${esc(d.status)}</span>`,
-        d.name ? esc(d.name) : '<span class="wrap">unnamed</span>',
-        esc(d.ip),
-        esc(d.mac),
-        esc(d.type),
-        esc(d.firstSeen),
-        esc(d.lastSeen)
-      ]))
+      filtered.map(device => {
+        const index = demoData.devices.findIndex(candidate => candidate.id === device.id);
+        return rowHtml([
+          `<select class="table-select" data-device-index="${index}" data-device-field="status">${statusOptions.map(option => `<option value="${option}" ${device.status === option ? "selected" : ""}>${option}</option>`).join("")}</select>`,
+          `<input class="table-input" data-device-index="${index}" data-device-field="name" value="${esc(device.name)}" placeholder="Device name">`,
+          `<input class="table-input mono-input" data-device-index="${index}" data-device-field="ip" value="${esc(device.ip)}" placeholder="IP address">`,
+          `<input class="table-input mono-input" data-device-index="${index}" data-device-field="mac" value="${esc(device.mac)}" placeholder="MAC address">`,
+          `<input class="table-input" data-device-index="${index}" data-device-field="type" value="${esc(device.type)}" placeholder="Type">`,
+          `<input class="table-input mono-input" data-device-index="${index}" data-device-field="firstSeen" value="${esc(device.firstSeen)}" placeholder="First seen">`,
+          `<input class="table-input mono-input" data-device-index="${index}" data-device-field="lastSeen" value="${esc(device.lastSeen)}" placeholder="Last seen">`
+        ]);
+      })
     )}
   `;
 
@@ -260,6 +379,11 @@ function renderDevices() {
     el("deviceSearchInput").addEventListener("input", renderDevices);
     document.querySelectorAll("[data-filter]").forEach(button => {
       button.addEventListener("click", () => setFilter(button.dataset.filter));
+    });
+    document.querySelectorAll("[data-device-index]").forEach(control => {
+      control.addEventListener("change", event => {
+        updateDeviceField(Number(event.target.dataset.deviceIndex), event.target.dataset.deviceField, event.target.value);
+      });
     });
 
     const clearBtn = el("clearDevicesBtn");
@@ -293,7 +417,7 @@ function renderAlerts() {
     </div>
     ${wrapTable(
       ["Time", "Type", "IP", "MAC", "Message"],
-      demoData.alerts.map(a => rowHtml([esc(a.time), esc(a.type), esc(a.ip), esc(a.mac), `<span class="wrap">${esc(a.message)}</span>`])),
+      demoData.alerts.map(alert => rowHtml([esc(alert.time), esc(alert.type), esc(alert.ip), esc(alert.mac), `<span class="wrap">${esc(alert.message)}</span>`])),
       true
     )}
   `;
@@ -323,7 +447,7 @@ function renderEvents() {
     </div>
     ${wrapTable(
       ["Time", "Port", "Sender IP", "Sender MAC", "Reason"],
-      demoData.events.map(e => rowHtml([esc(e.time), esc(e.port), esc(e.senderIp), esc(e.senderMac), `<span class="wrap">${esc(e.reason)}</span>`])),
+      demoData.events.map(event => rowHtml([esc(event.time), esc(event.port), esc(event.senderIp), esc(event.senderMac), `<span class="wrap">${esc(event.reason)}</span>`])),
       true
     )}
   `;
@@ -353,7 +477,7 @@ function renderSyslog() {
     </div>
     ${wrapTable(
       ["Time", "Source", "Message"],
-      demoData.syslog.map(s => rowHtml([esc(s.time), esc(s.source), `<span class="wrap">${esc(s.message)}</span>`])),
+      demoData.syslog.map(entry => rowHtml([esc(entry.time), esc(entry.source), `<span class="wrap">${esc(entry.message)}</span>`])),
       true
     )}
   `;
@@ -419,40 +543,6 @@ function renderScan() {
     if (runBtn) {
       runBtn.addEventListener("click", () => {
         restoreDemoData();
-        const scanResultsDiv = el("scanResults");
-        const newScan = {
-          label: "Network Scan",
-          status: "done",
-          started: new Date().toLocaleString(),
-          cmd: "nmap -O --osscan-limit -PR 192.168.1.0/24",
-          output: `Nmap scan report for 192.168.1.254
-Host is up (0.0010s latency).
-MAC Address: 50:95:51:93:A2:C8 (Router)
-Device type: broadband router
-
-Nmap scan report for 192.168.1.119
-Host is up (0.00080s latency).
-MAC Address: A8:A1:59:60:49:23 (Raspberry Pi)
-OS details: Linux 5.X
-
-Scan completed at ${new Date().toLocaleTimeString()}`
-        };
-
-        scanResultsDiv.innerHTML = `
-          <div class="scan-result">
-            <div class="scan-head">
-              <div class="scan-meta">
-                <span class="scan-status done">${esc(newScan.status)}</span>
-                <span>${esc(newScan.label)}</span>
-                <span>${esc(newScan.cmd)}</span>
-              </div>
-              <span class="top-timestamp">${esc(newScan.started)}</span>
-            </div>
-            <div class="scan-output">
-              <pre>${esc(newScan.output)}</pre>
-            </div>
-          </div>
-        `;
         renderAll();
         setView("scan");
       });
@@ -469,7 +559,6 @@ Scan completed at ${new Date().toLocaleTimeString()}`
     if (repopulateBtn) {
       repopulateBtn.addEventListener("click", () => {
         restoreDemoData();
-        el("scanResults").innerHTML = "";
         renderAll();
         setView("scan");
       });
@@ -482,16 +571,23 @@ function renderSettings() {
     <div class="section-header">
       <div>
         <h2 class="section-title">Settings</h2>
-        <div class="section-subtitle">Static configuration preview for the GitHub demo site.</div>
+        <div class="section-subtitle">Adjust the live dashboard configuration for the prototype.</div>
       </div>
     </div>
     <div class="settings-grid">
-      <div class="setting-card"><div class="setting-label">Active Interface</div><div class="setting-value">${esc(el("demoNic").value)}</div></div>
-      <div class="setting-card"><div class="setting-label">Auto Refresh</div><div class="setting-value">10 second dashboard refresh</div></div>
-      <div class="setting-card"><div class="setting-label">Syslog Port</div><div class="setting-value">UDP 514</div></div>
-      <div class="setting-card"><div class="setting-label">Dashboard Port</div><div class="setting-value">5000</div></div>
+      ${settingsControl("Active Interface", `<select id="settingsNicSelect" class="setting-input">${nicOptions.map(option => `<option value="${esc(option)}" ${demoData.settings.activeInterface === option ? "selected" : ""}>${esc(option)}</option>`).join("")}</select>`)}
+      ${settingsControl("Auto Refresh", `<input id="settingsRefreshInput" class="setting-input" value="${esc(demoData.settings.autoRefresh)}" placeholder="10 second dashboard refresh">`)}
+      ${settingsControl("Dashboard Port", `<input id="settingsDashboardPortInput" class="setting-input mono-input" value="${esc(demoData.settings.dashboardPort)}" placeholder="5000">`)}
+      ${settingsControl("Syslog Port", `<input id="settingsSyslogPortInput" class="setting-input mono-input" value="${esc(demoData.settings.syslogPort)}" placeholder="514">`)}
     </div>
   `;
+
+  setTimeout(() => {
+    el("settingsNicSelect").addEventListener("change", event => updateSetting("activeInterface", event.target.value));
+    el("settingsRefreshInput").addEventListener("change", event => updateSetting("autoRefresh", event.target.value));
+    el("settingsDashboardPortInput").addEventListener("change", event => updateSetting("dashboardPort", event.target.value));
+    el("settingsSyslogPortInput").addEventListener("change", event => updateSetting("syslogPort", event.target.value));
+  }, 0);
 }
 
 function renderAll() {
@@ -503,13 +599,17 @@ function renderAll() {
   renderSyslog();
   renderScan();
   renderSettings();
+  syncHeaderNic();
 }
 
 document.querySelectorAll("[data-demo-view]").forEach(button => {
   button.addEventListener("click", () => setView(button.dataset.demoView));
 });
 
-el("demoNic").addEventListener("change", renderSettings);
+el("demoNic").addEventListener("change", event => {
+  demoData.settings.activeInterface = event.target.value;
+  renderSettings();
+});
 
 renderAll();
 setView("overview");
