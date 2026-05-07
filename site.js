@@ -42,22 +42,94 @@ const nicOptions = [
   "Wi-Fi (192.168.0.44)"
 ];
 
-const deviceNames = [
-  "Core Gateway",
-  "Pi Monitor",
-  "Mia's Laptop",
-  "Lab Camera 2",
-  "Front Desk Printer",
-  "Warehouse Sensor",
-  "Conference Tablet",
-  "Dev Workstation",
-  "Guest Phone 3",
-  "Media Center"
-];
+const deviceCatalog = {
+  Phone: [
+    "Samsung Galaxy S22",
+    "Samsung Galaxy S24 Ultra",
+    "iPhone 15 Pro",
+    "iPhone 14",
+    "Google Pixel 8",
+    "Google Pixel 7a",
+    "OnePlus 12",
+    "Motorola Edge 50",
+    "Samsung Galaxy A54",
+    "iPhone SE (3rd gen)"
+  ],
+  AP: [
+    "Ubiquiti UniFi U6-Pro",
+    "Ubiquiti UniFi U7-Pro",
+    "Cisco Meraki MR46",
+    "Aruba AP-505",
+    "TP-Link EAP670",
+    "Netgear WAX620",
+    "Ruckus R650",
+    "Engenius ECW230",
+    "Mist AP43",
+    "Fortinet FortiAP 431F"
+  ],
+  Server: [
+    "Dell PowerEdge T350",
+    "Dell PowerEdge R750",
+    "HPE ProLiant DL380 Gen11",
+    "HPE ProLiant ML110 Gen11",
+    "Lenovo ThinkSystem SR650",
+    "Supermicro SuperServer 6029U",
+    "Cisco UCS C240 M6",
+    "Dell PowerEdge R650",
+    "HPE Apollo 4200",
+    "Lenovo ThinkSystem ST250"
+  ],
+  Printer: [
+    "HP LaserJet Pro M404dn",
+    "HP Color LaserJet Pro M479fdw",
+    "Brother HL-L2350DW",
+    "Brother MFC-L8900CDW",
+    "Canon imageCLASS MF743Cdw",
+    "Epson WorkForce Pro WF-3820",
+    "Xerox VersaLink C405",
+    "Lexmark MS431dn",
+    "Ricoh SP 3710DN",
+    "Konica Minolta bizhub C3350i"
+  ],
+  Laptop: [
+    "Dell Latitude 5540",
+    "Dell XPS 15",
+    "Lenovo ThinkPad X1 Carbon Gen 11",
+    "Lenovo ThinkPad T14",
+    "HP EliteBook 840 G10",
+    "HP ProBook 450 G10",
+    "Apple MacBook Pro 14\" (M3)",
+    "Apple MacBook Air 13\" (M2)",
+    "ASUS ZenBook 14",
+    "Microsoft Surface Laptop 5"
+  ],
+  "Desktop PC": [
+    "Dell OptiPlex 7010",
+    "Dell Precision 3660 Tower",
+    "HP EliteDesk 800 G9",
+    "HP Z2 Tower G9",
+    "Lenovo ThinkCentre M90t",
+    "Lenovo ThinkStation P360",
+    "Apple iMac 24\" (M3)",
+    "Apple Mac mini (M2)",
+    "Custom Windows 11 Build (Intel i7 / RTX 4070)",
+    "Intel NUC 13 Pro"
+  ],
+  "IoT Device": [
+    "Wyze Cam v3",
+    "Amazon Echo Dot (5th gen)",
+    "Google Nest Thermostat",
+    "Google Nest Hub",
+    "Ring Video Doorbell Pro",
+    "Philips Hue Bridge",
+    "TP-Link Kasa Smart Plug",
+    "Ecobee Smart Thermostat Premium",
+    "Arlo Pro 4 Camera",
+    "Samsung SmartThings Hub"
+  ]
+};
 
-const deviceTypes = [
-  "Router", "Host", "Laptop", "AP", "ESP32", "IoT Device", "Printer", "Server", "Phone"
-];
+const deviceTypes = Object.keys(deviceCatalog);
 
 const statusOptions = ["trusted", "known", "new", "alert"];
 
@@ -111,6 +183,7 @@ function generateRandomizedDemoData() {
   const eventAlertMacs = new Set(eventSeedData.events.map(event => event.senderMac));
 
   const selectedDevices = shuffle(eventSeedData.devices).slice(0, 8).map(device => {
+    const type = randomItem(deviceTypes);
     let status = "known";
 
     if (trustedMacs.has(device.mac) || trustedIps.has(device.ip)) {
@@ -123,14 +196,27 @@ function generateRandomizedDemoData() {
 
     return {
       id: `${device.ip}-${device.mac}`.replace(/[^a-zA-Z0-9]/g, ""),
-      name: Math.random() > 0.35 ? randomItem(deviceNames) : "",
+      name: randomItem(deviceCatalog[type]),
       ip: device.ip,
       mac: device.mac,
-      type: randomItem(deviceTypes),
+      type,
       status,
       firstSeen: dateToShortTime(device.first_seen),
       lastSeen: dateToShortTime(device.last_seen)
     };
+  });
+
+  selectedDevices.forEach(device => {
+    if (device.ip === "192.168.1.254" && device.mac === "50:95:51:93:A2:C0") {
+      device.type = "Modem";
+      device.name = "Arris SURFboard SB8200";
+      device.status = "trusted";
+    }
+    if (device.ip === "192.168.1.119" && device.mac === "A8:A1:59:60:49:23") {
+      device.type = "Desktop PC";
+      device.name = "admin";
+      device.status = "trusted";
+    }
   });
 
   const trustedBindings = eventSeedData.trusted_bindings.map(binding => ({ ...binding }));
