@@ -142,6 +142,10 @@ button,input,select{font:inherit;}
   font-family:'JetBrains Mono',monospace;
   font-size:12px;
 }
+.readonly-input{
+  opacity:0.85;
+  cursor:not-allowed;
+}
 .setting-control{
   margin-top:12px;
 }

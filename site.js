@@ -43,8 +43,16 @@ const nicOptions = [
 ];
 
 const deviceNames = [
-  "Router", "Raspberry Pi", "Media Server", "Security Camera", "Office Laptop",
-  "IoT Hub", "Smart TV", "Lab Sensor", "Printer", "Guest Phone"
+  "Core Gateway",
+  "Pi Monitor",
+  "Mia's Laptop",
+  "Lab Camera 2",
+  "Front Desk Printer",
+  "Warehouse Sensor",
+  "Conference Tablet",
+  "Dev Workstation",
+  "Guest Phone 3",
+  "Media Center"
 ];
 
 const deviceTypes = [
@@ -87,11 +95,31 @@ Device type: ${device.type || "host"}`;
 }
 
 function generateRandomizedDemoData() {
-  const selectedDevices = shuffle(eventSeedData.devices).slice(0, 8).map((device, index) => {
-    const trustedMacs = new Set(eventSeedData.trusted_bindings.map(binding => binding.mac));
-    const status = trustedMacs.has(device.mac)
-      ? "trusted"
-      : statusOptions[(index + Math.floor(Math.random() * statusOptions.length)) % statusOptions.length];
+  const trustedMacs = new Set(eventSeedData.trusted_bindings.map(binding => binding.mac));
+  const trustedIps = new Set(eventSeedData.trusted_bindings.map(binding => binding.ip));
+  const newAlertIps = new Set(
+    eventSeedData.alerts
+      .filter(alert => alert.type === "new_device")
+      .map(alert => alert.ip)
+  );
+  const newAlertMacs = new Set(
+    eventSeedData.alerts
+      .filter(alert => alert.type === "new_device")
+      .map(alert => alert.mac)
+  );
+  const eventAlertIps = new Set(eventSeedData.events.map(event => event.senderIp));
+  const eventAlertMacs = new Set(eventSeedData.events.map(event => event.senderMac));
+
+  const selectedDevices = shuffle(eventSeedData.devices).slice(0, 8).map(device => {
+    let status = "known";
+
+    if (trustedMacs.has(device.mac) || trustedIps.has(device.ip)) {
+      status = "trusted";
+    } else if (newAlertIps.has(device.ip) || newAlertMacs.has(device.mac)) {
+      status = "new";
+    } else if (eventAlertIps.has(device.ip) || eventAlertMacs.has(device.mac)) {
+      status = "alert";
+    }
 
     return {
       id: `${device.ip}-${device.mac}`.replace(/[^a-zA-Z0-9]/g, ""),
@@ -147,7 +175,8 @@ let demoData = structuredClone(initialDemoData);
 
 const state = {
   view: "overview",
-  filter: "all"
+  filter: "all",
+  deviceSearch: ""
 };
 
 const el = id => document.getElementById(id);
@@ -213,6 +242,11 @@ function setFilter(filter) {
   document.querySelectorAll("[data-filter]").forEach(button => {
     button.classList.toggle("active", button.dataset.filter === filter);
   });
+  renderDevices();
+}
+
+function setDeviceSearch(value) {
+  state.deviceSearch = value;
   renderDevices();
 }
 
@@ -314,7 +348,7 @@ function renderOverview() {
 
 function renderDevices() {
   const section = el("demo-devices");
-  const search = (el("deviceSearchInput")?.value || "").trim().toLowerCase();
+  const search = state.deviceSearch.trim().toLowerCase();
   const filtered = demoData.devices.filter(device => {
     if (state.filter !== "all" && device.status !== state.filter) return false;
     if (!search) return true;
@@ -347,7 +381,7 @@ function renderDevices() {
     </div>
 
     <div class="filters">
-      <input id="deviceSearchInput" class="search-input" type="text" placeholder="Search IP, MAC, name, or type">
+      <input id="deviceSearchInput" class="search-input" type="text" placeholder="Search IP, MAC, name, or type" value="${esc(state.deviceSearch)}">
       <div class="pill-row">
         <button class="pill ${state.filter === "all" ? "active" : ""}" data-filter="all">all</button>
         <button class="pill ${state.filter === "trusted" ? "active" : ""}" data-filter="trusted">trusted</button>
@@ -364,19 +398,19 @@ function renderDevices() {
         return rowHtml([
           `<select class="table-select" data-device-index="${index}" data-device-field="status">${statusOptions.map(option => `<option value="${option}" ${device.status === option ? "selected" : ""}>${option}</option>`).join("")}</select>`,
           `<input class="table-input" data-device-index="${index}" data-device-field="name" value="${esc(device.name)}" placeholder="Device name">`,
-          `<input class="table-input mono-input" data-device-index="${index}" data-device-field="ip" value="${esc(device.ip)}" placeholder="IP address">`,
-          `<input class="table-input mono-input" data-device-index="${index}" data-device-field="mac" value="${esc(device.mac)}" placeholder="MAC address">`,
+          `<input class="table-input mono-input readonly-input" value="${esc(device.ip)}" placeholder="IP address" readonly>`,
+          `<input class="table-input mono-input readonly-input" value="${esc(device.mac)}" placeholder="MAC address" readonly>`,
           `<input class="table-input" data-device-index="${index}" data-device-field="type" value="${esc(device.type)}" placeholder="Type">`,
-          `<input class="table-input mono-input" data-device-index="${index}" data-device-field="firstSeen" value="${esc(device.firstSeen)}" placeholder="First seen">`,
-          `<input class="table-input mono-input" data-device-index="${index}" data-device-field="lastSeen" value="${esc(device.lastSeen)}" placeholder="Last seen">`
+          `<input class="table-input mono-input readonly-input" value="${esc(device.firstSeen)}" placeholder="First seen" readonly>`,
+          `<input class="table-input mono-input readonly-input" value="${esc(device.lastSeen)}" placeholder="Last seen" readonly>`
         ]);
       })
     )}
   `;
 
   setTimeout(() => {
-    el("deviceSearchInput").value = search;
-    el("deviceSearchInput").addEventListener("input", renderDevices);
+    const deviceSearchInput = el("deviceSearchInput");
+    deviceSearchInput.addEventListener("input", event => setDeviceSearch(event.target.value));
     document.querySelectorAll("[data-filter]").forEach(button => {
       button.addEventListener("click", () => setFilter(button.dataset.filter));
     });
